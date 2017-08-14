@@ -1,2 +1,4 @@
 rootProject.name = 'micro-commerce'
 
+include 'product-command'
+include 'product-query'
