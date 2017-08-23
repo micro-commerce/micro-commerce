@@ -21,7 +21,7 @@ public class ProductController {
         this.productCreateCommand = productCreateCommand;
     }
 
-    @RequestMapping(value = "create", method = RequestMethod.POST)
+    @RequestMapping(value = "/", method = RequestMethod.POST)
     public void create(@RequestBody @Valid ProductCreationRequest request){
         productCreateCommand.requestProductCreation(request);
     }
