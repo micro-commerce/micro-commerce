@@ -70,5 +70,19 @@ services:
         aliases:
          - kafka-rest
 
+  product-command:
+    image: org.micro.commerce/product-command:1.0-SNAPSHOT
+    ports:
+     - "8080"
+    deploy:
+      replicas: 1
+    depends_on:
+     - zookeeper
+     - kafka
+    networks:
+      micro-commerce:
+        aliases:
+         - product-command
+
 networks:
   micro-commerce:
