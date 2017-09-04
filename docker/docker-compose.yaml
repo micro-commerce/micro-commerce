@@ -1,6 +1,8 @@
 version: "3"
 
 services:
+
+  # Kafka Containers Start
   zookeeper:
     image: confluentinc/cp-zookeeper
     ports:
@@ -21,8 +23,6 @@ services:
      - "29092"
     deploy:
       replicas: 1
-    depends_on:
-     - zookeeper
     environment:
      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:32181
      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://kafka:29092
@@ -32,57 +32,76 @@ services:
         aliases:
          - kafka
 
-  kafka-schema-registry:
-    image: confluentinc/cp-schema-registry
+#  kafka-schema-registry:
+#    image: confluentinc/cp-schema-registry
+#    ports:
+#     - "8081"
+#    deploy:
+#      replicas: 1
+#    environment:
+#     - SCHEMA_REGISTRY_KAFKASTORE_CONNECTION_URL=zookeeper:32181
+#     - SCHEMA_REGISTRY_HOST_NAME=localhost
+#     - SCHEMA_REGISTRY_LISTENERS=http://localhost:8081
+#    networks:
+#      micro-commerce:
+#        aliases:
+#         - kafka-schema-registry
+#
+#  kafka-rest:
+#    image: confluentinc/cp-kafka-rest
+#    ports:
+#     - "8082"
+#    deploy:
+#      replicas: 1
+#    environment:
+#     - KAFKA_REST_ZOOKEEPER_CONNECT=zookeeper:32181
+#     - KAFKA_REST_LISTENERS=http://localhost:8082
+#     - KAFKA_REST_SCHEMA_REGISTRY_URL=http://kafka-schema-registry:8081
+#     - KAFKA_REST_HOST_NAME=localhost
+#    networks:
+#      micro-commerce:
+#        aliases:
+#         - kafka-rest
+  # Kafka Containers End
+
+  # Cassandra Containers Start
+  cassandra:
+    image: cassandra
     ports:
-     - "8081"
+     - "7000"
+     - "7001"
+     - "9042"
     deploy:
       replicas: 1
-    depends_on:
-     - zookeeper
-     - kafka
-    environment:
-     - SCHEMA_REGISTRY_KAFKASTORE_CONNECTION_URL=zookeeper:32181
-     - SCHEMA_REGISTRY_HOST_NAME=localhost
-     - SCHEMA_REGISTRY_LISTENERS=http://localhost:8081
     networks:
       micro-commerce:
         aliases:
-         - kafka-schema-registry
+         - cassandra
+  # Cassandra Containers End
 
-  kafka-rest:
-    image: confluentinc/cp-kafka-rest
-    ports:
-     - "8082"
-    deploy:
-      replicas: 1
-    depends_on:
-     - zookeeper
-     - kafka
-     - kafka-schema-registry
-    environment:
-     - KAFKA_REST_ZOOKEEPER_CONNECT=zookeeper:32181
-     - KAFKA_REST_LISTENERS=http://localhost:8082
-     - KAFKA_REST_SCHEMA_REGISTRY_URL=http://kafka-schema-registry:8081
-     - KAFKA_REST_HOST_NAME=localhost
-    networks:
-      micro-commerce:
-        aliases:
-         - kafka-rest
-
+  # Project Containers Start
   product-command:
     image: org.micro.commerce/product-command:1.0-SNAPSHOT
     ports:
      - "8080"
     deploy:
       replicas: 1
-    depends_on:
-     - zookeeper
-     - kafka
     networks:
       micro-commerce:
         aliases:
          - product-command
+
+  product-query:
+    image: org.micro.commerce/product-query:1.0-SNAPSHOT
+    ports:
+     - "8080"
+    deploy:
+      replicas: 1
+    networks:
+      micro-commerce:
+        aliases:
+         - product-query
+  # Project Containers End
 
 networks:
   micro-commerce:

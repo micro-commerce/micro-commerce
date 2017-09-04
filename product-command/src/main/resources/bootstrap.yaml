@@ -1,6 +1,6 @@
 spring:
   application:
-    name: productAggregate-command
+    name: product-command
 
 kafka:
   bootstrap-servers: kafka:29092
