@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: product-command
+
+kafka:
+  bootstrap-servers: kafka:29092
+  topic:
+    product-creation-requested: product-creation-requested.t
+    product-creation-validated: product-creation-validated.t
+    product-creation-validation-failed: product-creation-validation-failed.t
+    product-created: product-created.t
+    product-creation-failed: product-creation-failed.t

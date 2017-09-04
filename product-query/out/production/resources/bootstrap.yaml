@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: product-query
+
+kafka:
+  bootstrap-servers: kafka:29092
+  topic:
+    product-created: product-created.t
+
+cassandra:
+  contact-point: cassandra
+  keyspace: product-query
+  table: product
