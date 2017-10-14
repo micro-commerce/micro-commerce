@@ -1,7 +1,7 @@
 package org.micro.commerce.product.application.controller;
 
 import org.micro.commerce.product.domain.command.ProductCreateCommand;
-import org.micro.commerce.product.application.request.ProductCreationRequest;
+import org.micro.commerce.product.domain.request.ProductCreationRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;

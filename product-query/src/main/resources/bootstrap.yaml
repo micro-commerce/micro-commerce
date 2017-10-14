@@ -5,7 +5,7 @@ spring:
 kafka:
   bootstrap-servers: kafka:29092
   topic:
-    product-created: product-created.t
+    product-event: product-event.t
 
 cassandra:
   contact-point: cassandra

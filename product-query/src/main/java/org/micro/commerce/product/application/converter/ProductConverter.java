@@ -1,6 +1,6 @@
 package org.micro.commerce.product.application.converter;
 
-import org.micro.commerce.product.application.response.model.Product;
+import org.micro.commerce.product.domain.response.model.Product;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

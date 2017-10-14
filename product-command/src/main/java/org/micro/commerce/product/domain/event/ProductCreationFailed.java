@@ -1,6 +1,8 @@
 package org.micro.commerce.product.domain.event;
 
-import org.micro.commerce.product.domain.aggregate.ProductAggregate;
+public class ProductCreationFailed extends ProductEvent {
 
-public class ProductCreationFailed extends Event<ProductAggregate> {
+    public ProductCreationFailed() {
+        super(EventType.PRODUCT_CREATION_FAILED);
+    }
 }

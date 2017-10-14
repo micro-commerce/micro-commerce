@@ -7,6 +7,7 @@ public abstract class Event<T> {
     private UUID eventId;
     private UUID traceId;
     private T model;
+    private EventType eventType;
 
     public Event() {
         eventId = UUID.randomUUID();
@@ -14,10 +15,6 @@ public abstract class Event<T> {
 
     public UUID getEventId() {
         return eventId;
-    }
-
-    public void setEventId(UUID eventId) {
-        this.eventId = eventId;
     }
 
     public UUID getTraceId() {
@@ -34,5 +31,13 @@ public abstract class Event<T> {
 
     public void setModel(T model) {
         this.model = model;
+    }
+
+    public EventType getEventType() {
+        return eventType;
+    }
+
+    public void setEventType(EventType eventType) {
+        this.eventType = eventType;
     }
 }

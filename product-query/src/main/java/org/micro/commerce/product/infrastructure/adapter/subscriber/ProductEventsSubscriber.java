@@ -1,6 +1,7 @@
 package org.micro.commerce.product.infrastructure.adapter.subscriber;
 
-import org.micro.commerce.product.domain.event.ProductCreated;
+import org.micro.commerce.product.domain.event.EventType;
+import org.micro.commerce.product.domain.event.ProductEvent;
 import org.micro.commerce.product.infrastructure.adapter.writer.Writer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,10 +19,12 @@ public class ProductEventsSubscriber {
         this.writer = writer;
     }
 
-    @KafkaListener(topics = "${kafka.topic.product-created}")
-    public void receive(ProductCreated event) {
-        LOGGER.info("isProductCreated: " + (event instanceof ProductCreated) + " received payload='{}'", event.getModel());
-        writer.persist(event);
+    @KafkaListener(topics = "${kafka.topic.product-event}")
+    public void receive(ProductEvent event) {
+        LOGGER.info("isProductCreated: " + EventType.PRODUCT_CREATED.equals(event.getEventType()) + " received payload='{}'", event.getModel());
+        if(EventType.PRODUCT_CREATED.equals(event.getEventType())){
+            writer.persist(event);
+        }
     }
 
 }

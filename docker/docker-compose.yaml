@@ -2,7 +2,7 @@ version: "3"
 
 services:
 
-  # Kafka Containers Start
+  # Kafka Setup Start
   zookeeper:
     image: confluentinc/cp-zookeeper
     ports:
@@ -32,37 +32,87 @@ services:
         aliases:
          - kafka
 
-#  kafka-schema-registry:
-#    image: confluentinc/cp-schema-registry
-#    ports:
-#     - "8081"
-#    deploy:
-#      replicas: 1
-#    environment:
-#     - SCHEMA_REGISTRY_KAFKASTORE_CONNECTION_URL=zookeeper:32181
-#     - SCHEMA_REGISTRY_HOST_NAME=localhost
-#     - SCHEMA_REGISTRY_LISTENERS=http://localhost:8081
-#    networks:
-#      micro-commerce:
-#        aliases:
-#         - kafka-schema-registry
+  kafka-schema-registry:
+    image: confluentinc/cp-schema-registry
+    ports:
+     - "8081"
+    deploy:
+      replicas: 1
+    environment:
+     - SCHEMA_REGISTRY_KAFKASTORE_CONNECTION_URL=zookeeper:32181
+     - SCHEMA_REGISTRY_HOST_NAME=kafka-schema-registry
+     - SCHEMA_REGISTRY_LISTENERS=http://0.0.0.0:8081
+     - SCHEMA_REGISTRY_ACCESS_CONTROL_ALLOW_ORIGIN=*
+     - SCHEMA_REGISTRY_ACCESS_CONTROL_ALLOW_METHODS=GET,POST,PUT,OPTIONS,DELETE
+    networks:
+      micro-commerce:
+        aliases:
+         - kafka-schema-registry
+
+  kafka-rest:
+    image: confluentinc/cp-kafka-rest
+    ports:
+     - "8082"
+    deploy:
+      replicas: 1
+    environment:
+     - KAFKA_REST_ZOOKEEPER_CONNECT=zookeeper:32181
+     - KAFKA_REST_LISTENERS=http://0.0.0.0:8082
+     - KAFKA_REST_SCHEMA_REGISTRY_URL=http://kafka-schema-registry:8081
+     - KAFKA_REST_HOST_NAME=kafka-rest
+     - KAFKA_REST_CONSUMER_REQUEST_TIMEOUT_MS=30000
+     - KAFKA_REST_ACCESS_CONTROL_ALLOW_ORIGIN=*
+     - KAFKA_REST_ACCESS_CONTROL_ALLOW_METHODS=GET,POST,PUT,OPTIONS,DELETE
+    networks:
+      micro-commerce:
+        aliases:
+         - kafka-rest
 #
-#  kafka-rest:
-#    image: confluentinc/cp-kafka-rest
+#  kafka-topics-ui:
+#    image: landoop/kafka-topics-ui:0.8.3
 #    ports:
-#     - "8082"
+#    - "8000"
 #    deploy:
 #      replicas: 1
 #    environment:
-#     - KAFKA_REST_ZOOKEEPER_CONNECT=zookeeper:32181
-#     - KAFKA_REST_LISTENERS=http://localhost:8082
-#     - KAFKA_REST_SCHEMA_REGISTRY_URL=http://kafka-schema-registry:8081
-#     - KAFKA_REST_HOST_NAME=localhost
+#     - KAFKA_REST_PROXY_URL=http://kafka-rest:8082
+#     - PROXY=true
+#     - PROXY_SKIP_VERIFY=true
 #    networks:
 #      micro-commerce:
 #        aliases:
-#         - kafka-rest
-  # Kafka Containers End
+#         - kafka-topics-ui
+#
+#  kafka-schema-registry-ui:
+#    image: landoop/schema-registry-ui
+#    ports:
+#    - "8000"
+#    deploy:
+#      replicas: 1
+#    environment:
+#     - SCHEMAREGISTRY_URL=http://kafka-schema-registry:8081
+#     - PROXY=true
+#     - PROXY_SKIP_VERIFY=true
+#    networks:
+#      micro-commerce:
+#        aliases:
+#         - kafka-schema-registry-ui
+
+#  TODO Add When Connector instances Needed
+#  kafka-connect-ui:
+#      image: landoop/kafka-connect-ui
+#      ports:
+#      - "8000"
+#      deploy:
+#        replicas: 1
+#      environment:
+#       - CONNECT_URL=http://connect.distributed.url
+#      networks:
+#        micro-commerce:
+#          aliases:
+#           - kafka-connect-ui
+
+  # Kafka Setup End
 
   # Cassandra Containers Start
   cassandra:
@@ -83,7 +133,7 @@ services:
   product-command:
     image: org.micro.commerce/product-command:1.0-SNAPSHOT
     ports:
-     - "8080"
+     - "8080:8080"
     deploy:
       replicas: 1
     networks:

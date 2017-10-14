@@ -1,6 +1,9 @@
 package org.micro.commerce.product.domain.event;
 
-import org.micro.commerce.product.domain.aggregate.ProductAggregate;
+public class ProductCreated extends ProductEvent {
 
-public class ProductCreated extends Event<ProductAggregate> {
+    public ProductCreated() {
+        super(EventType.PRODUCT_CREATED);
+    }
+
 }

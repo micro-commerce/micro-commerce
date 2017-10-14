@@ -1,7 +1,7 @@
 package org.micro.commerce.product.domain.query;
 
 import org.micro.commerce.product.domain.model.Product;
-import org.micro.commerce.product.domain.repository.ProductRepository;
+import org.micro.commerce.product.infrastructure.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

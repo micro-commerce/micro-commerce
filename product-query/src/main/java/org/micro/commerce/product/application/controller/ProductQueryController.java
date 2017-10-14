@@ -1,7 +1,7 @@
 package org.micro.commerce.product.application.controller;
 
 import org.micro.commerce.product.application.converter.ProductConverter;
-import org.micro.commerce.product.application.response.ListAllProductsResponse;
+import org.micro.commerce.product.domain.response.ListAllProductsResponse;
 import org.micro.commerce.product.domain.model.Product;
 import org.micro.commerce.product.domain.query.ProductQuery;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,7 +26,7 @@ public class ProductQueryController {
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public ListAllProductsResponse listAll(){
         List<Product> products = productQuery.listAll();
-        List<org.micro.commerce.product.application.response.model.Product> productResults = productConverter.to(products);
+        List<org.micro.commerce.product.domain.response.model.Product> productResults = productConverter.to(products);
         return new ListAllProductsResponse(productResults);
     }
 
