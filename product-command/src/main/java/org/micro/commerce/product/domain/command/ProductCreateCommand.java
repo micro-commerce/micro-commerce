@@ -13,9 +13,7 @@ import java.util.UUID;
 
 @Service
 public class ProductCreateCommand {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(ProductCreateCommand.class);
-
+    
     ProductEventsPublisher productEventsPublisher;
 
     @Autowired
@@ -37,50 +35,4 @@ public class ProductCreateCommand {
         );
     }
 
-//    public void when(ProductCreationRequested productEvent){
-//        ProductAggregate productAggregate = productEvent.getModel();
-//
-//        if(productAggregate.getPrice().compareTo(BigDecimal.ZERO) == 0 || productAggregate.getPrice().compareTo(BigDecimal.ZERO) == -1){
-//            ProductCreationValidationFailed event = new ProductCreationValidationFailed();
-//            event.setModel(productAggregate);
-//            event.setTraceId(productEvent.getTraceId());
-//            productEventsPublisher.send(
-//                    event
-//            );
-//            return;
-//        }
-//
-//        ProductCreationValidated event = new ProductCreationValidated();
-//        event.setModel(productAggregate);
-//        event.setTraceId(productEvent.getTraceId());
-//        productEventsPublisher.send(
-//                event
-//        );
-//    }
-//
-//    public void when(ProductCreationValidated productEvent){
-//        ProductCreated event = new ProductCreated();
-//        event.setModel(productEvent.getModel());
-//        event.setTraceId(productEvent.getTraceId());
-//        productEventsPublisher.send(
-//                event
-//        );
-//    }
-//
-//    public void when(ProductCreationValidationFailed productEvent) {
-//        ProductCreationFailed event = new ProductCreationFailed();
-//        event.setModel(productEvent.getModel());
-//        event.setTraceId(productEvent.getTraceId());
-//        productEventsPublisher.send(
-//                event
-//        );
-//    }
-
-//    public void when(ProductCreated productEvent) {
-//
-//    }
-//
-//    public void when(ProductCreationFailed productEvent) {
-//
-//    }
 }
