@@ -2,7 +2,7 @@ package org.micro.commerce.product.domain.aggregate;
 
 
 import org.micro.commerce.product.domain.event.Event;
-import org.micro.commerce.product.domain.exception.VersionMismatchException;
+import org.micro.commerce.product.domain.exception.VersionMismatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,7 +21,7 @@ public abstract class BaseAggregate<T extends Event> {
         LOGGER.info("event id: " + event.getEventId());
         Long latestEventVersion = latestEventVersion();
         if (event.getVersion() <= latestEventVersion){
-            throw new VersionMismatchException(String.format("Event Version Not Consistent -> current event version: %d, latest event version: %d", event.getVersion(), latestEventVersion));
+            throw new VersionMismatch(String.format("Event Version Not Consistent -> current event version: %d, latest event version: %d", event.getVersion(), latestEventVersion));
         }
         events.add(event);
         events.stream().forEach(x -> LOGGER.info(String.format("Aggregate EventList eventType: %s, version: %s", x.getEventType(), x.getVersion())));

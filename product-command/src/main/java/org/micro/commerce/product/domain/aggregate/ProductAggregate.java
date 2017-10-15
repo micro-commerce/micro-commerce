@@ -1,7 +1,7 @@
 package org.micro.commerce.product.domain.aggregate;
 
 import org.micro.commerce.product.domain.event.*;
-import org.micro.commerce.product.domain.exception.ValidationException;
+import org.micro.commerce.product.domain.exception.ProductNotValid;
 import org.micro.commerce.product.domain.model.Product;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,8 +24,9 @@ public class ProductAggregate extends BaseAggregate<ProductEvent> {
         init(event.getModel());
         LOGGER.warn("Model Price: " + getPrice());
         if(getPrice().compareTo(BigDecimal.ZERO) == 0 || getPrice().compareTo(BigDecimal.ZERO) == -1){
-            LOGGER.warn("Price Not Valid!");
-            throw new ValidationException("price not valid");
+            String priceLog = String.format("Must Be Higher Than Zero -> price: %s", getPrice());
+            LOGGER.warn(priceLog);
+            throw new ProductNotValid(priceLog);
         }
     }
 

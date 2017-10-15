@@ -6,11 +6,9 @@ import org.apache.kafka.streams.state.KeyValueStore;
 import org.micro.commerce.product.domain.aggregate.ProductAggregate;
 import org.micro.commerce.product.domain.converter.ProductEventConverter;
 import org.micro.commerce.product.domain.event.*;
-import org.micro.commerce.product.domain.exception.ValidationException;
-import org.micro.commerce.product.domain.exception.VersionMismatchException;
+import org.micro.commerce.product.domain.exception.ProductNotValid;
+import org.micro.commerce.product.domain.exception.VersionMismatch;
 import org.micro.commerce.product.infrastructure.configuration.StateStoreProperties;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class ProductCreationRequestTransformer implements ValueTransformer<ProductEvent, ProductEvent> {
 
@@ -47,10 +45,11 @@ public class ProductCreationRequestTransformer implements ValueTransformer<Produ
         try {
             productAggregate.apply(productCreationRequestedConverter.toSame(event));
             resultEvent = productCreationValidatedConverter.toNew(event);
-        } catch (ValidationException validationException){
+        } catch (ProductNotValid productNotValid){
             resultEvent = productCreationFailedConverter.toNew(event);
-        } catch (VersionMismatchException versionMismatchException){
-            resultEvent = new ProductVersionMismatched(event.getTraceId(), event.getModel());
+            resultEvent.setErrorInfo(new ErrorInfo(productNotValid));
+        } catch (VersionMismatch versionMismatch){
+            resultEvent = new ProductVersionMismatched(event.getTraceId(), event.getModel(), versionMismatch);
         } finally {
             if(!EventType.PRODUCT_VERSION_MISMATCHED.equals(resultEvent.getEventType())){
                 productAggregateStateStoreSupplier.put(event.getModel().getId().toString(), productAggregate);

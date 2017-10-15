@@ -10,11 +10,12 @@ public class ProductVersionMismatched extends ProductEvent {
         super(EventType.PRODUCT_VERSION_MISMATCHED);
     }
 
-    public ProductVersionMismatched(UUID traceId, Product model) {
+    public ProductVersionMismatched(UUID traceId, Product model, Exception exception) {
         super(EventType.PRODUCT_VERSION_MISMATCHED);
         this.setEventId(UUID.randomUUID());
         this.setTraceId(traceId);
         this.setVersion(0L);
+        this.setErrorInfo(new ErrorInfo(exception));
         this.setModel(model);
     }
 

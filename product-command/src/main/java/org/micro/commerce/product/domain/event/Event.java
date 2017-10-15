@@ -9,6 +9,7 @@ public abstract class Event<T> {
     private T model;
     private EventType eventType;
     private Long version;
+    private ErrorInfo errorInfo;
 
     public UUID getEventId() {
         return eventId;
@@ -48,5 +49,13 @@ public abstract class Event<T> {
 
     public void setVersion(Long version) {
         this.version = version;
+    }
+
+    public ErrorInfo getErrorInfo() {
+        return errorInfo;
+    }
+
+    public void setErrorInfo(ErrorInfo errorInfo) {
+        this.errorInfo = errorInfo;
     }
 }

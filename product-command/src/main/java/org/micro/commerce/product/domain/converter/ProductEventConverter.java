@@ -23,6 +23,7 @@ public abstract class ProductEventConverter<T extends ProductEvent> implements E
         resultEvent.setTraceId(event.getTraceId());
         resultEvent.setVersion(event.getVersion());
         resultEvent.setModel(event.getModel());
+        resultEvent.setErrorInfo(event.getErrorInfo());
         return resultEvent;
     }
 
