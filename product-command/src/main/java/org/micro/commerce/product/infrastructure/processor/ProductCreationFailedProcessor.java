@@ -9,23 +9,23 @@ import org.micro.commerce.product.domain.event.ProductCreationFailed;
 import org.micro.commerce.product.domain.event.ProductEvent;
 import org.micro.commerce.product.domain.event.ProductVersionMismatched;
 import org.micro.commerce.product.domain.exception.VersionMismatchException;
-import org.micro.commerce.product.infrastructure.adapter.publisher.ProductEventsPublisher;
+import org.micro.commerce.product.infrastructure.adapter.publisher.ProductEventPublisher;
 import org.micro.commerce.product.infrastructure.configuration.StateStoreProperties;
 
 public class ProductCreationFailedProcessor implements Processor<String, ProductEvent> {
 
     private ProductEventConverter<ProductCreationFailed> productCreationFailedConverter;
-    private ProductEventsPublisher productEventsPublisher;
+    private ProductEventPublisher productEventPublisher;
 
     private ProcessorContext context;
     private KeyValueStore<String, ProductAggregate> productAggregateStateStoreSupplier;
 
     public ProductCreationFailedProcessor(
             ProductEventConverter<ProductCreationFailed> productCreationFailedConverter,
-            ProductEventsPublisher productEventsPublisher
+            ProductEventPublisher productEventPublisher
     ) {
         this.productCreationFailedConverter = productCreationFailedConverter;
-        this.productEventsPublisher = productEventsPublisher;
+        this.productEventPublisher = productEventPublisher;
     }
 
     @Override
@@ -40,7 +40,7 @@ public class ProductCreationFailedProcessor implements Processor<String, Product
         try {
             productAggregate.apply(productCreationFailedConverter.toSame(event));
         } catch (VersionMismatchException versionMismatchException){
-            productEventsPublisher.send(key, new ProductVersionMismatched(event.getTraceId(), event.getModel()));
+            productEventPublisher.send(key, new ProductVersionMismatched(event.getTraceId(), event.getModel()));
             return;
         }
         productAggregateStateStoreSupplier.put(key, productAggregate);

@@ -1,5 +1,7 @@
 package org.micro.commerce.product.domain.model;
 
+import org.micro.commerce.product.domain.request.ProductCreationRequest;
+
 import java.math.BigDecimal;
 import java.util.UUID;
 
@@ -9,6 +11,16 @@ public class Product {
     private String name;
     private String description;
     private BigDecimal price;
+
+    public Product() {
+    }
+
+    public Product(ProductCreationRequest request) {
+        this.id = request.getId();
+        this.name = request.getName();
+        this.description = request.getDescription();
+        this.price = request.getPrice();
+    }
 
     public UUID getId() {
         return id;

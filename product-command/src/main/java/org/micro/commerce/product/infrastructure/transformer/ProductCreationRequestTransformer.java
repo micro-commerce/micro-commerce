@@ -43,7 +43,7 @@ public class ProductCreationRequestTransformer implements ValueTransformer<Produ
         ProductAggregate productAggregate = productAggregateStateStoreSupplier.get(event.getModel().getId().toString());
         if(productAggregate == null)
             productAggregate = new ProductAggregate();
-        
+
         try {
             productAggregate.apply(productCreationRequestedConverter.toSame(event));
             resultEvent = productCreationValidatedConverter.toNew(event);

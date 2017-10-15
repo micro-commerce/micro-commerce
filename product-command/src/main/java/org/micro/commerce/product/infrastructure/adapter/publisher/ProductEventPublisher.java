@@ -9,9 +9,9 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ProductEventsPublisher {
+public class ProductEventPublisher {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ProductEventsPublisher.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ProductEventPublisher.class);
 
     @Value("${kafka.topic.product-event}")
     private String productEventTopic;
@@ -34,7 +34,7 @@ public class ProductEventsPublisher {
     private KafkaTemplate<String, Event> kafkaTemplate;
 
     @Autowired
-    public ProductEventsPublisher(KafkaTemplate<String, Event> kafkaTemplate) {
+    public ProductEventPublisher(KafkaTemplate<String, Event> kafkaTemplate) {
         this.kafkaTemplate = kafkaTemplate;
     }
 

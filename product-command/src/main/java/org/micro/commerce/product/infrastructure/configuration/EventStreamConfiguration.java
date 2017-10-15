@@ -9,7 +9,7 @@ import org.apache.kafka.streams.state.Stores;
 import org.micro.commerce.product.domain.aggregate.ProductAggregate;
 import org.micro.commerce.product.domain.converter.ProductEventConverter;
 import org.micro.commerce.product.domain.event.*;
-import org.micro.commerce.product.infrastructure.adapter.publisher.ProductEventsPublisher;
+import org.micro.commerce.product.infrastructure.adapter.publisher.ProductEventPublisher;
 import org.micro.commerce.product.infrastructure.processor.ProductCreatedProcessor;
 import org.micro.commerce.product.infrastructure.processor.ProductCreationFailedProcessor;
 import org.micro.commerce.product.infrastructure.transformer.ProductCreationRequestTransformer;
@@ -65,7 +65,7 @@ public class EventStreamConfiguration {
             ProductEventConverter<ProductCreationFailed> productCreationFailedConverter,
             ProductEventConverter<ProductCreationValidated> productCreationValidatedConverter,
             ProductEventConverter<ProductCreated> productCreatedConverter,
-            ProductEventsPublisher productEventsPublisher
+            ProductEventPublisher productEventPublisher
     ) {
         kStreamBuilder.addStateStore(productAggregateStateStoreSupplier);
         KStream<String, ProductEvent> stream = kStreamBuilder.stream(Serdes.String(), new JsonSerde<>(ProductEvent.class), productEventTopic);
@@ -82,11 +82,11 @@ public class EventStreamConfiguration {
 
         stream
                 .filter((key, value) -> value.getEventType().equals(EventType.PRODUCT_CREATED))
-                .process(() -> new ProductCreatedProcessor(productCreatedConverter, productEventsPublisher), StateStoreProperties.PRODUCT_AGGREGATE_STATE_STORE_NAME);
+                .process(() -> new ProductCreatedProcessor(productCreatedConverter, productEventPublisher), StateStoreProperties.PRODUCT_AGGREGATE_STATE_STORE_NAME);
 
         stream
                 .filter((key, value) -> value.getEventType().equals(EventType.PRODUCT_CREATION_FAILED))
-                .process(() -> new ProductCreationFailedProcessor(productCreationFailedConverter, productEventsPublisher), StateStoreProperties.PRODUCT_AGGREGATE_STATE_STORE_NAME);
+                .process(() -> new ProductCreationFailedProcessor(productCreationFailedConverter, productEventPublisher), StateStoreProperties.PRODUCT_AGGREGATE_STATE_STORE_NAME);
 
         stream.to(Serdes.String(), new JsonSerde<>(ProductEvent.class), productEventLogTopic);
 
