@@ -5,11 +5,9 @@ import org.apache.kafka.streams.processor.ProcessorContext;
 import org.apache.kafka.streams.state.KeyValueStore;
 import org.micro.commerce.product.domain.aggregate.ProductAggregate;
 import org.micro.commerce.product.domain.converter.ProductEventConverter;
-import org.micro.commerce.product.domain.event.ProductCreationFailed;
-import org.micro.commerce.product.domain.event.ProductCreationRequested;
-import org.micro.commerce.product.domain.event.ProductCreationValidated;
-import org.micro.commerce.product.domain.event.ProductEvent;
+import org.micro.commerce.product.domain.event.*;
 import org.micro.commerce.product.domain.exception.ValidationException;
+import org.micro.commerce.product.domain.exception.VersionMismatchException;
 import org.micro.commerce.product.infrastructure.configuration.StateStoreProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,16 +39,24 @@ public class ProductCreationRequestTransformer implements ValueTransformer<Produ
 
     @Override
     public ProductEvent transform(ProductEvent event) {
-        ProductAggregate productAggregate = new ProductAggregate();
-        try{
+        ProductEvent resultEvent = null;
+        ProductAggregate productAggregate = productAggregateStateStoreSupplier.get(event.getModel().getId().toString());
+        if(productAggregate == null)
+            productAggregate = new ProductAggregate();
+        
+        try {
             productAggregate.apply(productCreationRequestedConverter.toSame(event));
-            return productCreationValidatedConverter.toNew(event);
+            resultEvent = productCreationValidatedConverter.toNew(event);
         } catch (ValidationException validationException){
-            return productCreationFailedConverter.toNew(event);
+            resultEvent = productCreationFailedConverter.toNew(event);
+        } catch (VersionMismatchException versionMismatchException){
+            resultEvent = new ProductVersionMismatched(event.getTraceId(), event.getModel());
         } finally {
-            productAggregateStateStoreSupplier.put(event.getModel().getId().toString(), productAggregate);
+            if(!EventType.PRODUCT_VERSION_MISMATCHED.equals(resultEvent.getEventType())){
+                productAggregateStateStoreSupplier.put(event.getModel().getId().toString(), productAggregate);
+            }
         }
-
+        return resultEvent;
     }
 
     @Override

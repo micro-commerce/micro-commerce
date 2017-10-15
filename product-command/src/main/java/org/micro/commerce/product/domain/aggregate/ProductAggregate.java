@@ -19,9 +19,6 @@ public class ProductAggregate extends BaseAggregate<ProductEvent> {
     private BigDecimal price;
 
     public void apply(ProductCreationRequested event){
-        LOGGER.warn("Event Type: PRODUCT_CREATION_REQUESTED");
-        LOGGER.info("event model id: " + event.getModel().getId().toString());
-        LOGGER.info("event id: " + event.getEventId());
         LOGGER.warn("Event Model Price: " + event.getModel().getPrice());
         super.apply(event);
         init(event.getModel());
@@ -33,23 +30,14 @@ public class ProductAggregate extends BaseAggregate<ProductEvent> {
     }
 
     public void apply(ProductCreationValidated event){
-        LOGGER.info("ProductCreationValid for model: " + event.getModel().getId());
-        LOGGER.info("event model id: " + event.getModel().getId().toString());
-        LOGGER.info("event id: " + event.getEventId());
         super.apply(event);
     }
 
     public void apply(ProductCreationFailed event){
-        LOGGER.info("ProductCreationFailed for model: " + event.getModel().getId());
-        LOGGER.info("event model id: " + event.getModel().getId().toString());
-        LOGGER.info("event id: " + event.getEventId());
         super.apply(event);
     }
 
     public void apply(ProductCreated event){
-        LOGGER.info("ProductCreated for model: " + event.getModel().getId());
-        LOGGER.info("event model id: " + event.getModel().getId().toString());
-        LOGGER.info("event id: " + event.getEventId());
         super.apply(event);
     }
 

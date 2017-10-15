@@ -8,10 +8,15 @@ public abstract class Event<T> {
     private UUID traceId;
     private T model;
     private EventType eventType;
+    private Long version;
 
-    public UUID getEventId() { return eventId; }
+    public UUID getEventId() {
+        return eventId;
+    }
 
-    public void setEventId(UUID eventId) { this.eventId = eventId; }
+    public void setEventId(UUID eventId) {
+        this.eventId = eventId;
+    }
 
     public UUID getTraceId() {
         return traceId;
@@ -35,5 +40,13 @@ public abstract class Event<T> {
 
     public void setEventType(EventType eventType) {
         this.eventType = eventType;
+    }
+
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
     }
 }
