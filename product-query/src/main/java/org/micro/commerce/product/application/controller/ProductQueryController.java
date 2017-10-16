@@ -23,7 +23,7 @@ public class ProductQueryController {
         this.productQuery = productQuery;
     }
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET)
     public ListAllProductsResponse listAll(){
         List<Product> products = productQuery.listAll();
         List<org.micro.commerce.product.domain.response.model.Product> productResults = productConverter.to(products);
