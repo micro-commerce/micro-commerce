@@ -2,7 +2,7 @@ package org.micro.commerce.product.domain.aggregate;
 
 
 import org.micro.commerce.product.domain.event.Event;
-import org.micro.commerce.product.domain.exception.VersionMismatch;
+import org.micro.commerce.product.domain.exception.EventRevisionMismatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,12 +19,12 @@ public abstract class BaseAggregate<T extends Event> {
     public void apply(T event){
         LOGGER.info("event type: " + event.getEventType());
         LOGGER.info("event id: " + event.getEventId());
-        Long latestEventVersion = latestEventVersion();
-        if (event.getVersion() <= latestEventVersion){
-            throw new VersionMismatch(String.format("Event Version Not Consistent -> current event version: %d, latest event version: %d", event.getVersion(), latestEventVersion));
+        Long latestRevision = latestRevision();
+        if (event.getRevision() <= latestRevision){
+            throw new EventRevisionMismatch(String.format("Event Revision Not Consistent -> event type: %s, current event revision: %d, latest event revision: %d", event.getEventType(), event.getRevision(), latestRevision));
         }
         events.add(event);
-        events.stream().forEach(x -> LOGGER.info(String.format("Aggregate EventList eventType: %s, version: %s", x.getEventType(), x.getVersion())));
+        events.stream().forEach(x -> LOGGER.info(String.format("Aggregate EventList eventType: %s, version: %s", x.getEventType(), x.getRevision())));
     }
 
     public List<T> getEvents() {
@@ -35,10 +35,10 @@ public abstract class BaseAggregate<T extends Event> {
         this.events = events;
     }
 
-    public Long latestEventVersion(){
+    public Long latestRevision(){
         return events
                 .stream()
-                .map(event -> event.getVersion())
+                .map(event -> event.getRevision())
                 .max(Comparator.naturalOrder())
                 .orElse(0L);
     }

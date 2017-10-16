@@ -21,7 +21,7 @@ public abstract class ProductEventConverter<T extends ProductEvent> implements E
         T resultEvent = createNew();
         resultEvent.setEventId(event.getEventId());
         resultEvent.setTraceId(event.getTraceId());
-        resultEvent.setVersion(event.getVersion());
+        resultEvent.setRevision(event.getRevision());
         resultEvent.setModel(event.getModel());
         resultEvent.setErrorInfo(event.getErrorInfo());
         return resultEvent;
@@ -32,7 +32,7 @@ public abstract class ProductEventConverter<T extends ProductEvent> implements E
         T resultEvent = createNew();
         resultEvent.setEventId(UUID.randomUUID());
         resultEvent.setTraceId(event.getTraceId());
-        resultEvent.setVersion(event.getVersion() + 1);
+        resultEvent.setRevision(event.getRevision() + 1);
         resultEvent.setModel(event.getModel());
         return resultEvent;
     }

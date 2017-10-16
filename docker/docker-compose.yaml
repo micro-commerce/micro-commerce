@@ -144,7 +144,7 @@ services:
   product-query:
     image: org.micro.commerce/product-query:1.0-SNAPSHOT
     ports:
-     - "8091:8080"
+     - "80901:8080"
     deploy:
       replicas: 1
     networks:

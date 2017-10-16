@@ -7,8 +7,8 @@ import org.micro.commerce.product.domain.aggregate.ProductAggregate;
 import org.micro.commerce.product.domain.converter.ProductEventConverter;
 import org.micro.commerce.product.domain.event.ProductCreationFailed;
 import org.micro.commerce.product.domain.event.ProductEvent;
-import org.micro.commerce.product.domain.event.ProductVersionMismatched;
-import org.micro.commerce.product.domain.exception.VersionMismatch;
+import org.micro.commerce.product.domain.event.ProductRevisionMismatched;
+import org.micro.commerce.product.domain.exception.EventRevisionMismatch;
 import org.micro.commerce.product.infrastructure.adapter.publisher.ProductEventPublisher;
 import org.micro.commerce.product.infrastructure.configuration.StateStoreProperties;
 
@@ -39,8 +39,8 @@ public class ProductCreationFailedProcessor implements Processor<String, Product
         ProductAggregate productAggregate = productAggregateStateStoreSupplier.get(key);
         try {
             productAggregate.apply(productCreationFailedConverter.toSame(event));
-        } catch (VersionMismatch versionMismatch){
-            productEventPublisher.send(key, new ProductVersionMismatched(event.getTraceId(), event.getModel(), versionMismatch));
+        } catch (EventRevisionMismatch eventRevisionMismatch){
+            productEventPublisher.send(key, new ProductRevisionMismatched(event.getTraceId(), event.getModel(), eventRevisionMismatch));
             return;
         }
         productAggregateStateStoreSupplier.put(key, productAggregate);

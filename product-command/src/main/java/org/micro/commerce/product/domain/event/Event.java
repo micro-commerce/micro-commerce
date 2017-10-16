@@ -8,7 +8,7 @@ public abstract class Event<T> {
     private UUID traceId;
     private T model;
     private EventType eventType;
-    private Long version;
+    private Long revision;
     private ErrorInfo errorInfo;
 
     public UUID getEventId() {
@@ -43,12 +43,12 @@ public abstract class Event<T> {
         this.eventType = eventType;
     }
 
-    public Long getVersion() {
-        return version;
+    public Long getRevision() {
+        return revision;
     }
 
-    public void setVersion(Long version) {
-        this.version = version;
+    public void setRevision(Long revision) {
+        this.revision = revision;
     }
 
     public ErrorInfo getErrorInfo() {

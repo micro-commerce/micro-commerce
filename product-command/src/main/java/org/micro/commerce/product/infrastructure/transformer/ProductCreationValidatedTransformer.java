@@ -8,8 +8,8 @@ import org.micro.commerce.product.domain.converter.ProductEventConverter;
 import org.micro.commerce.product.domain.event.ProductCreated;
 import org.micro.commerce.product.domain.event.ProductCreationValidated;
 import org.micro.commerce.product.domain.event.ProductEvent;
-import org.micro.commerce.product.domain.event.ProductVersionMismatched;
-import org.micro.commerce.product.domain.exception.VersionMismatch;
+import org.micro.commerce.product.domain.event.ProductRevisionMismatched;
+import org.micro.commerce.product.domain.exception.EventRevisionMismatch;
 import org.micro.commerce.product.infrastructure.configuration.StateStoreProperties;
 
 public class ProductCreationValidatedTransformer implements ValueTransformer<ProductEvent, ProductEvent> {
@@ -39,8 +39,8 @@ public class ProductCreationValidatedTransformer implements ValueTransformer<Pro
         ProductAggregate productAggregate = productAggregateStateStoreSupplier.get(event.getModel().getId().toString());
         try {
             productAggregate.apply(productCreationValidatedConverter.toSame(event));
-        } catch (VersionMismatch versionMismatch){
-            return new ProductVersionMismatched(event.getTraceId(), event.getModel(), versionMismatch);
+        } catch (EventRevisionMismatch eventRevisionMismatch){
+            return new ProductRevisionMismatched(event.getTraceId(), event.getModel(), eventRevisionMismatch);
         }
         productAggregateStateStoreSupplier.put(event.getModel().getId().toString(), productAggregate);
         return productCreatedConverter.toNew(event);

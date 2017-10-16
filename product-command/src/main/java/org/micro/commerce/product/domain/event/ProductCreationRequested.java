@@ -14,7 +14,7 @@ public class ProductCreationRequested extends ProductEvent {
         super(EventType.PRODUCT_CREATION_REQUESTED);
         this.setEventId(UUID.randomUUID());
         this.setTraceId(traceId);
-        this.setVersion(1L);
+        this.setRevision(1L);
         this.setModel(model);
     }
 }
