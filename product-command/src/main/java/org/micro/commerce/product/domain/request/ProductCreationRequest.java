@@ -7,9 +7,6 @@ import java.util.UUID;
 public class ProductCreationRequest {
 
     @NotNull
-    private UUID id;
-
-    @NotNull
     private String name;
 
     private String description;
@@ -20,19 +17,10 @@ public class ProductCreationRequest {
     public ProductCreationRequest() {
     }
 
-    public ProductCreationRequest(UUID id, String name, String description, BigDecimal price) {
-        this.id = id;
+    public ProductCreationRequest(String name, String description, BigDecimal price) {
         this.name = name;
         this.description = description;
         this.price = price;
-    }
-
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
     }
 
     public String getName() {

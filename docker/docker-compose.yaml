@@ -1,4 +1,4 @@
-version: "2.2"
+version: "2.1"
 
 services:
 
@@ -114,7 +114,7 @@ services:
         condition: service_started
     restart: always
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8001/status"]
+      test: ["CMD", "curl", "-f", "http://localhost:8081/status"]
     environment:
       - KONG_DATABASE=cassandra
       - KONG_CASSANDRA_CONTACT_POINTS=cassandra
@@ -122,9 +122,11 @@ services:
       - KONG_ADMIN_ACCESS_LOG=/dev/stdout
       - KONG_PROXY_ERROR_LOG=/dev/stderr
       - KONG_ADMIN_ERROR_LOG=/dev/stderr
+      - KONG_PROXY_LISTEN=0.0.0.0:8080
+      - KONG_ADMIN_LISTEN=0.0.0.0:8081
     ports:
-      - "8080:8000"
-      - "8081:8001"
+      - "8080:8080"
+      - "8081:8081"
       - "8443:8443"
       - "8444:8444"
     networks:

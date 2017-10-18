@@ -4,11 +4,11 @@ import org.micro.commerce.product.domain.response.model.Product;
 
 import java.util.List;
 
-public class ListAllProductsResponse {
+public class ProductListResource {
 
     private List<Product> products;
 
-    public ListAllProductsResponse(List<Product> products) {
+    public ProductListResource(List<Product> products) {
         this.products = products;
     }
 

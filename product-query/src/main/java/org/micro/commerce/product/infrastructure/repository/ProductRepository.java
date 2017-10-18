@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.UUID;
 
 @Repository
 public class ProductRepository {
@@ -37,6 +38,19 @@ public class ProductRepository {
         return productMapper
                 .map(resultSet)
                 .all();
+    }
+
+    public Product findById(UUID productId){
+        Select findByIdQuery = QueryBuilder
+                .select()
+                .from(session.getLoggedKeyspace(), table)
+                .where(QueryBuilder.eq("id", productId))
+                .limit(1);
+
+        ResultSet resultSet = execute(findByIdQuery);
+        return productMapper
+                .map(resultSet)
+                .one();
     }
 
     public void save(Product product) {

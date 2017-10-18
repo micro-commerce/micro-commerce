@@ -15,8 +15,8 @@ public class Product {
     public Product() {
     }
 
-    public Product(ProductCreationRequest request) {
-        this.id = request.getId();
+    public Product(UUID productId, ProductCreationRequest request) {
+        this.id = productId;
         this.name = request.getName();
         this.description = request.getDescription();
         this.price = request.getPrice();

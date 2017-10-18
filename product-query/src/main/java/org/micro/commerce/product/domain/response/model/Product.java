@@ -1,11 +1,13 @@
 package org.micro.commerce.product.domain.response.model;
 
+import org.springframework.hateoas.ResourceSupport;
+
 import java.math.BigDecimal;
 import java.util.UUID;
 
-public class Product {
+public class Product extends ResourceSupport {
 
-    private UUID id;
+    private UUID productId;
 
     private String name;
 
@@ -13,12 +15,12 @@ public class Product {
 
     private BigDecimal price;
 
-    public UUID getId() {
-        return id;
+    public UUID getProductId() {
+        return productId;
     }
 
-    public void setId(UUID id) {
-        this.id = id;
+    public void setProductId(UUID productId) {
+        this.productId = productId;
     }
 
     public String getName() {

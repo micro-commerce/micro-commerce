@@ -11,7 +11,7 @@ public class ProductConverter {
 
     public Product to(org.micro.commerce.product.domain.model.Product product){
         Product productResult = new Product();
-        productResult.setId(product.getId());
+        productResult.setProductId(product.getId());
         productResult.setName(product.getName());
         productResult.setDescription(product.getDescription());
         productResult.setPrice(product.getPrice());

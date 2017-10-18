@@ -53,6 +53,7 @@ dependencies {
 
     compile("org.springframework:spring-tx")
 
+    compile("org.springframework.boot:spring-boot-starter-hateoas")
     compile('org.springframework.cloud:spring-cloud-starter-config')
     compile(group: 'org.springframework.kafka', name: 'spring-kafka', version: "${springKafkaVersion}")
 

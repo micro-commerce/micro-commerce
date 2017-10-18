@@ -5,6 +5,7 @@ import org.micro.commerce.product.infrastructure.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class ProductQuery {
@@ -15,8 +16,12 @@ public class ProductQuery {
         this.productRepository = productRepository;
     }
 
-    public List<Product> listAll(){
+    public List<Product> findAll(){
         return productRepository.findAll();
+    }
+
+    public Product findById(UUID productId) {
+        return productRepository.findById(productId);
     }
 
 }

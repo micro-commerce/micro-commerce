@@ -19,10 +19,10 @@ public class ProductCreateCommand {
         this.productEventPublisher = productEventPublisher;
     }
 
-    public void requestProductCreation(ProductCreationRequest request){
-        ProductCreationRequested event = new ProductCreationRequested(UUID.randomUUID(), new Product(request));
+    public void requestProductCreation(UUID productId, ProductCreationRequest request){
+        ProductCreationRequested event = new ProductCreationRequested(productId, new Product(productId, request));
         productEventPublisher.send(
-                event.getModel().getId().toString(),
+                productId.toString(),
                 event
         );
     }
