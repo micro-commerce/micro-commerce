@@ -32,16 +32,16 @@ public class ProductCommandController {
         UUID productId = UUID.randomUUID();
         productCreateCommand.requestProductCreation(productId, request);
 
-        return seeOtherResponse(productId);
+        return resourceAccepted(productId);
     }
 
-    private ResponseEntity seeOtherResponse(UUID id){
+    private ResponseEntity resourceAccepted(UUID id){
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest().path("/{id}")
                 .buildAndExpand(id).toUri();
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.setLocation(location);
-        return new ResponseEntity(responseHeaders, HttpStatus.SEE_OTHER);
+        return ResponseEntity.accepted().headers(responseHeaders).build();
     }
 
 }
